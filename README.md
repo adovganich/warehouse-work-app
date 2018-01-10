@@ -9,5 +9,5 @@ Native Android + Retrofit2 for API calling.
 4. MainActivity contains a list of invoices, refresh and logout buttons.  
 5. List of invoices is a ListView with adaptor, refresh every application login or refresh-button click.  
 
-All data is taken form server via API(Retrofit2).  
+All data is taken from server via API(Retrofit2).  
 Authentication on server is made by secure cookie (user id).  
