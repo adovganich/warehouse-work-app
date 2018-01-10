@@ -17,12 +17,15 @@ import com.allein.freund.authapp.AuthService.AuthUtils;
 import com.allein.freund.authapp.AuthService.AuthService;
 import com.allein.freund.authapp.AuthService.User;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class LoginActivity extends AppCompatActivity {
+    public static final String USER_COOKIE = "com.allein.freund.testapplication.USER_COOKIE";
     private AuthService mAuthService;
     private String TAG = "Login";
     private Button loginBtn;
@@ -60,7 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             loginToast("Login complete.");
                             Log.i(TAG, "login complete.");
-                            passToMainActivity();
+                            List<String> cookies = response.headers().values("Set-Cookie");
+                            String userCookie = getUserCookie(cookies);
+                            passToMainActivity(userCookie);
                         } else {
                             loginToast("Credentials are invalid.");
                             Log.i(TAG, "credentials are invalid.");
@@ -70,8 +75,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        loginToast("Login failed. Server is offline.");
-                        Log.e(TAG, "Unable to sent credentials to API. Server is offline.");
+                        loginToast("Login failed. Server is offline or broken.");
+                        Log.e(TAG, "Unable to sent credentials to API. Server is offline or broken.");
                         showLoginButton(true);
                     }
                 });
@@ -87,9 +92,19 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void passToMainActivity() {
+    private String getUserCookie(List<String> cookies) {
+        for (String cookie : cookies) {
+            if (cookie.contains("user=")) {
+                return cookie.substring(5, cookie.indexOf(';'));
+            }
+        }
+        return null;
+    }
+
+    private void passToMainActivity(String userCookie) {
         showLoginButton(true);
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(USER_COOKIE, userCookie);
         startActivity(intent);
     }
 
