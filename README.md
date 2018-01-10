@@ -1,5 +1,5 @@
-# login-screen-application
-Simple login screen app
+# warehouse-work-app
+Simple app for warehouse order picking
 
 Native Android + Retrofit2 for API calling.  
   
