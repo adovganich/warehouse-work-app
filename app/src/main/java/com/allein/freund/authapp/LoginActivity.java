@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.allein.freund.authapp.AuthService.AuthUtils;
@@ -24,6 +25,8 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     private AuthService mAuthService;
     private String TAG = "Login";
+    private Button loginBtn;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,9 @@ public class LoginActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
         mAuthService = AuthUtils.getAuthService();
-        Button loginBtn = (Button) findViewById(R.id.btn_submit);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        this.loginBtn = (Button) findViewById(R.id.btn_submit);
+        this.progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        this.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final EditText emailInput = (EditText) findViewById(R.id.email_input);
@@ -42,12 +46,13 @@ public class LoginActivity extends AppCompatActivity {
                     String email = emailInput.getText().toString().trim();
                     String password = passwordInput.getText().toString().trim();
                     sendCredentials(email, password);
+                    showLoginButton(false);
                 }
             }
         });
     }
 
-    public void sendCredentials(String email, String password) {
+    private void sendCredentials(String email, String password) {
         mAuthService.sendCredentials(email, password)
                 .enqueue(new Callback<User>() {
                     @Override
@@ -59,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             loginToast("Credentials are invalid.");
                             Log.i(TAG, "credentials are invalid.");
+                            showLoginButton(true);
                         }
                     }
 
@@ -66,11 +72,23 @@ public class LoginActivity extends AppCompatActivity {
                     public void onFailure(Call<User> call, Throwable t) {
                         loginToast("Login failed. Server is offline.");
                         Log.e(TAG, "Unable to sent credentials to API. Server is offline.");
+                        showLoginButton(true);
                     }
                 });
     }
 
-    public void passToMainActivity() {
+    private void showLoginButton(Boolean flag) {
+        if (flag) {
+            progressBar.setVisibility(View.GONE);
+            loginBtn.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.GONE);
+        }
+    }
+
+    private void passToMainActivity() {
+        showLoginButton(true);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
