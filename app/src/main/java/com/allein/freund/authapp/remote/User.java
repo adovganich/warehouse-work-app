@@ -1,4 +1,4 @@
-package com.allein.freund.authapp.AuthService;
+package com.allein.freund.authapp.remote;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

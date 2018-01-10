@@ -1,9 +1,10 @@
-package com.allein.freund.authapp.AuthService;
+package com.allein.freund.authapp.remote;
 
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
@@ -15,4 +16,7 @@ public interface AuthService {
     @FormUrlEncoded
     Call<User> sendCredentials(@Field("email") String email,
                                @Field("password") String password);
+
+    @GET("/auth/logout/")
+    Call<User> logout();
 }

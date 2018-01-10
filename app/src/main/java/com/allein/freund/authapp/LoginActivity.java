@@ -13,9 +13,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.allein.freund.authapp.AuthService.AuthUtils;
-import com.allein.freund.authapp.AuthService.AuthService;
-import com.allein.freund.authapp.AuthService.User;
+import com.allein.freund.authapp.remote.APIUtils;
+import com.allein.freund.authapp.remote.AuthService;
+import com.allein.freund.authapp.remote.User;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     public static final String USER_COOKIE = "com.allein.freund.testapplication.USER_COOKIE";
     private AuthService mAuthService;
-    private String TAG = "Login";
+    private String TAG = "LOGIN";
     private Button loginBtn;
     private ProgressBar progressBar;
 
@@ -36,10 +36,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
-        mAuthService = AuthUtils.getAuthService();
-        this.loginBtn = (Button) findViewById(R.id.btn_submit);
-        this.progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        this.loginBtn.setOnClickListener(new View.OnClickListener() {
+        mAuthService = APIUtils.getAuthService();
+        loginBtn = (Button) findViewById(R.id.btn_submit);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final EditText emailInput = (EditText) findViewById(R.id.email_input);
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
     private String getUserCookie(List<String> cookies) {
         for (String cookie : cookies) {
             if (cookie.contains("user=")) {
-                return cookie.substring(5, cookie.indexOf(';'));
+                return cookie;
             }
         }
         return null;

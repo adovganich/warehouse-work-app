@@ -1,4 +1,4 @@
-package com.allein.freund.authapp.AuthService;
+package com.allein.freund.authapp.remote;
 
 /**
  * Created by freund on 1/9/18.
