@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/detailsRelativeTop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/invoiceDetailsTitle"
+            android:layout_width="203dp"
+            android:layout_height="46dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/detailsCustomer"
+            android:layout_width="177dp"
+            android:layout_height="33dp"
+            android:layout_below="@+id/invoiceDetailsTitle"
+            android:text=""
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/detailsSize"
+            android:layout_width="177dp"
+            android:layout_height="33dp"
+            android:layout_below="@+id/detailsCustomer"
+            android:text=""
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/detailsMoney"
+            android:layout_width="177dp"
+            android:layout_height="33dp"
+            android:layout_below="@+id/detailsSize"
+            android:text=""
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/refreshButtonDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="28dp"
+            android:layout_marginStart="28dp"
+            android:layout_toEndOf="@+id/invoiceDetailsTitle"
+            android:layout_toRightOf="@+id/invoiceDetailsTitle"
+            android:onClick="refreshInvoice"
+            android:text="@string/refreshButton" />
+
+        <LinearLayout
+            android:id="@+id/relativeLayoutDetails"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detailsMoney"
+            android:background="@color/colorCell">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/itemName"
+                android:textAlignment="center"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/itemAmount"
+                android:textAlignment="center"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/itemCost"
+                android:textAlignment="center"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/detailsListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/scanButton"
+            android:layout_below="@id/relativeLayoutDetails" />
+
+        <Button
+            android:id="@+id/scanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/backButton"
+            android:layout_centerHorizontal="true"
+            android:onClick="scan"
+            android:text="@string/scanButton" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:onClick="backToMain"
+            android:text="@string/backButton" />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

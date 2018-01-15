@@ -36,4 +36,8 @@ public class Invoice {
     public Float getMoney() {
         return money;
     }
+
+    public String toString() {
+        return String.format("%s:%s", customer, number);
+    }
 }

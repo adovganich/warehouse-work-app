@@ -12,4 +12,9 @@
     <string name="sPositions">Amount</string>
     <string name="sMoney">Sum</string>
     <string name="invoiceListName">Invoices</string>
+    <string name="itemName">Name</string>
+    <string name="itemAmount">Amount</string>
+    <string name="itemCost">Cost</string>
+    <string name="backButton">Back</string>
+    <string name="scanButton">Scan</string>
 </resources>

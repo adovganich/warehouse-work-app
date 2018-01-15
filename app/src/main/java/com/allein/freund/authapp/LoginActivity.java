@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String USER_COOKIE = "com.allein.freund.testapplication.USER_COOKIE";
+    public static final String USER_COOKIE = "com.allein.freund.authapp.USER_COOKIE";
     private AuthService mAuthService;
     private String TAG = "LOGIN";
     private Button loginBtn;
