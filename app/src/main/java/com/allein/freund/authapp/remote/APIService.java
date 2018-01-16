@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -20,4 +21,8 @@ public interface APIService {
     @GET("/api/invoices/{id}")
     Call<List<InvoiceDetails>> getInvoiceDetails(@Header("Cookie") String userCookie,
                                                  @Path("id") int invoiceId);
+
+    @POST("/api/invoices/{id}")
+    Call<List<InvoiceDetails>> sendInoviceComplected(@Header("Cookie") String userCookie,
+                                                     @Path("id") int invoiceId);
 }

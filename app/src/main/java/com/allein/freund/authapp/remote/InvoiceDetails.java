@@ -24,14 +24,45 @@ public class InvoiceDetails {
     public String toString() {
         return String.format("%s:%s:%s:%s", id, name, cost, amount);
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public int getAmount(){
+
+    public int getAmount() {
         return amount;
     }
-    public int getCost(){
+
+    public void setAmount(int value) {
+        this.amount = value;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void increaseAmount() {
+        amount++;
+    }
+
+    public void decreaseAmount() {
+        amount--;
+    }
+
+    public int getCost() {
         return cost;
+    }
+
+    public int getId() {
+        return id;
     }
 
 }

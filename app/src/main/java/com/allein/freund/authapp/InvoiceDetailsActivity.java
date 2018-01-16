@@ -29,6 +29,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
     private List<InvoiceDetails> invoiceDetails;
     private InvoiceDetailsAdapter adapter;
     public static final String INVOICE_DETAILS = "com.allein.freund.authapp.INVOICE_DETAILS";
+    public static final String INVOICE_ID = "com.allein.freund.authapp.INVOICE_ID";
     private String TAG = "INVOICE_DETAILS";
 
     @Override
@@ -115,6 +116,8 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
         String json = gson.toJson(invoiceDetails, type);
         Intent intent = new Intent(this, ScanActivity.class);
         intent.putExtra(INVOICE_DETAILS, json);
+        intent.putExtra(INVOICE_ID, String.valueOf(invoiceId));
+        intent.putExtra(LoginActivity.USER_COOKIE, userCookie);
         startActivity(intent);
     }
 }
