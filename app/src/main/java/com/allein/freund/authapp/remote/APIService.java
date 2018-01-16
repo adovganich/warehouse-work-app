@@ -23,6 +23,6 @@ public interface APIService {
                                                  @Path("id") int invoiceId);
 
     @POST("/api/invoices/{id}")
-    Call<List<InvoiceDetails>> sendInoviceComplected(@Header("Cookie") String userCookie,
-                                                     @Path("id") int invoiceId);
+    Call<String> sendInvoiceComplected(@Header("Cookie") String userCookie,
+                                       @Path("id") int invoiceId);
 }

@@ -55,7 +55,6 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
                 // Prevent duplicate scans
                 return;
             }
-
             lastScanResult = result.getText();
             ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 10);
             toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
@@ -65,6 +64,13 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
                 pushItemToDone(item);
                 lastScanResult = null;
             }
+            try {
+                barcodeScannerView.pause();
+                Thread.sleep(1000);
+                barcodeScannerView.resume();
+            } catch (InterruptedException x) {
+            }
+
         }
 
         @Override
@@ -76,6 +82,8 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+        Button sendButton = (Button) findViewById(R.id.sendButton);
+        sendButton.setVisibility(View.GONE);
         Intent intent = getIntent();
         Gson gson = new Gson();
         String items = intent.getStringExtra(InvoiceDetailsActivity.INVOICE_DETAILS);
@@ -144,6 +152,10 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
             doneItem.setAmount(1);
             doneItemList.add(doneItem);
         }
+        Button sendButton = (Button) findViewById(R.id.sendButton);
+        if (remainItemList.size() == 0) {
+            sendButton.setVisibility(View.VISIBLE);
+        }
 
         adapterDone.notifyDataSetChanged();
         adapterRemain.notifyDataSetChanged();
@@ -178,14 +190,12 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
     @Override
     protected void onResume() {
         super.onResume();
-
         barcodeScannerView.resume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         barcodeScannerView.pause();
     }
 
@@ -195,18 +205,18 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
     }
 
     public void backToDetails(View view) {
-        finish();
+        onBackPressed();
     }
 
     @Override
     public void onBackPressed() {
-        finish();
+        super.onBackPressed();
     }
 
     private void sendToServer() {
-        mAPIService.sendInoviceComplected(userCookie, Integer.parseInt(invoiceId)).enqueue(new Callback<List<InvoiceDetails>>() {
+        mAPIService.sendInvoiceComplected(userCookie, Integer.parseInt(invoiceId)).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<List<InvoiceDetails>> call, Response<List<InvoiceDetails>> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Invoice completion sent.");
                 } else {
@@ -215,14 +225,15 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
             }
 
             @Override
-            public void onFailure(Call<List<InvoiceDetails>> call, Throwable t) {
-                Log.e(TAG, "Unable to complete invoice.");
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e(TAG, "Unable to complete invoice:" + t.getMessage());
             }
         });
     }
 
     public void send(View view) {
         sendToServer();
+        setResult(1);
         finish();
     }
 }

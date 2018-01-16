@@ -60,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
         getInvoices();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getInvoices();
+    }
+
     private Invoice getInvoice(int position) {
         return invoiceList.get(position);
     }
