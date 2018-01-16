@@ -1,5 +1,6 @@
 package com.allein.freund.authapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
@@ -11,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.allein.freund.authapp.remote.APIService;
@@ -56,7 +58,7 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
                 return;
             }
             lastScanResult = result.getText();
-            ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 10);
+            ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 30);
             toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
             Log.d(TAG, lastScanResult);
             InvoiceDetails item = getItemFromList(Integer.parseInt(lastScanResult), remainItemList);
@@ -231,8 +233,17 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
         });
     }
 
+    private void showSuccessToast() {
+        String message = "Order completed!";
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, message, duration);
+        toast.show();
+    }
+
     public void send(View view) {
         sendToServer();
+        showSuccessToast();
         setResult(1);
         finish();
     }
