@@ -119,5 +119,6 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
         intent.putExtra(INVOICE_ID, String.valueOf(invoiceId));
         intent.putExtra(LoginActivity.USER_COOKIE, userCookie);
         startActivity(intent);
+        finish();
     }
 }
