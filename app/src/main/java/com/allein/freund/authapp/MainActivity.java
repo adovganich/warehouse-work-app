@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String INVOICE_CUSTOMER = "com.allein.freund.authapp.INVOICE_CUSTOMER";
     public static final String INVOICE_SIZE = "com.allein.freund.authapp.INVOICE_SIZE";
     public static final String INVOICE_MONEY = "com.allein.freund.authapp.INVOICE_MONEY";
+    private String TAG = "MAIN";
     private APIService mAPIService;
     private String userCookie;
-    private String TAG = "MAIN";
     private List<Invoice> invoiceList;
     private ListViewAdapter adapter;
 

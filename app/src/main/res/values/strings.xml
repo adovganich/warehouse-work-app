@@ -17,4 +17,6 @@
     <string name="itemCost">Cost</string>
     <string name="backButton">Back</string>
     <string name="scanButton">Scan</string>
+    <string name="flashlight_ON">ON</string>
+    <string name="flashlight_OFF">OFF</string>
 </resources>
