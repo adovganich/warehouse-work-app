@@ -15,4 +15,4 @@ Native Android + Retrofit2 for API calling.
 All data is taken from server via API(Retrofit2).  
 Authentication on server is made by secure cookie (user id).  
 
-[![Watch the video](123)](https://youtu.be/FUKUDUJGlwI)
+[![Watch this](https://i.ytimg.com/vi/FUKUDUJGlwI/2.jpg?time=1516107234119)](https://youtu.be/FUKUDUJGlwI)
