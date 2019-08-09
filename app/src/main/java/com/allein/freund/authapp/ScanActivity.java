@@ -36,6 +36,7 @@ import retrofit2.Response;
 
 
 public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeView.TorchListener {
+    
 
     private List<InvoiceDetails> remainItemList;
     private List<InvoiceDetails> doneItemList;
