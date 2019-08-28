@@ -11,61 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/scanTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="Done"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-        <LinearLayout
-            android:id="@+id/scanDoneHead"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorCell"
-            android:layout_below="@+id/scanTitle">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/itemName"
-                android:textAlignment="center"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/itemAmount"
-                android:textAlignment="center"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/itemCost"
-                android:textAlignment="center"
-                android:textColor="#000000" />
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/scanDone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/scanWindow"
-            android:layout_below="@+id/scanDoneHead" />
-
         <com.journeyapps.barcodescanner.DecoratedBarcodeView
             android:id="@+id/scanWindow"
             android:layout_width="match_parent"
@@ -73,89 +18,29 @@
             android:layout_centerVertical="true"
             app:zxing_scanner_layout="@layout/custom_scanner" />
 
-        <TextView
-            android:id="@+id/scanRemain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/scanWindow"
-            android:text="Remain"
-            android:textAlignment="center"
-            android:textSize="18sp" />
         <LinearLayout
-            android:id="@+id/scanRemainHead"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorCell"
-            android:layout_below="@+id/scanRemain">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/itemName"
-                android:textAlignment="center"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/itemAmount"
-                android:textAlignment="center"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/itemCost"
-                android:textAlignment="center"
-                android:textColor="#000000" />
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/scanToDo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/scanBackButton"
-            android:layout_below="@+id/scanRemainHead" />
-
-        <Button
-            android:id="@+id/scanBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:onClick="backToDetails"
-            android:text="@string/backButton" />
-
-        <Button
-            android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="22dp"
-            android:layout_marginRight="22dp"
-            android:onClick="send"
-            android:text="@string/sendButton" />
+            android:layout_centerHorizontal="true">
 
         <Button
             android:id="@+id/flashlight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="23dp"
-            android:layout_marginStart="23dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text="@string/flashlight_ON" />
+
+        <Button
+            android:id="@+id/scanBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:onClick="backToDetails"
+            android:text="@string/backButton" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

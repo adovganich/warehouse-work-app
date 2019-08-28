@@ -5,48 +5,37 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
-
 
 import com.allein.freund.authapp.remote.APIService;
 import com.allein.freund.authapp.remote.APIUtils;
-import com.allein.freund.authapp.remote.InvoiceDetails;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
+import com.allein.freund.authapp.remote.Item;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeView.TorchListener {
-    
 
-    private List<InvoiceDetails> remainItemList;
-    private List<InvoiceDetails> doneItemList;
+    public static final String START_TYPE = "com.allein.freund.authapp.START_TYPE";
+
     private DecoratedBarcodeView barcodeScannerView;
     private Button switchFlashlightButton;
     private String lastScanResult;
-    private InvoiceDetailsAdapter adapterDone;
-    private InvoiceDetailsAdapter adapterRemain;
     private String userCookie;
-    private String invoiceId;
+    private int startType;
     private APIService mAPIService;
 
     private boolean isFlashLightOn = false;
@@ -62,10 +51,12 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
             ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 30);
             toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
             Log.d(TAG, lastScanResult);
-            InvoiceDetails item = getItemFromList(Integer.parseInt(lastScanResult), remainItemList);
-            if (item != null) {
-                pushItemToDone(item);
-                lastScanResult = null;
+            if (lastScanResult != null) {
+                if (startType == 0) {
+                    addItem(lastScanResult);
+                } else if (startType == 1) {
+                    deleteItem(lastScanResult);
+                }
             }
             try {
                 barcodeScannerView.pause();
@@ -73,7 +64,6 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
                 barcodeScannerView.resume();
             } catch (InterruptedException x) {
             }
-
         }
 
         @Override
@@ -85,37 +75,14 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
-        Button sendButton = (Button) findViewById(R.id.sendButton);
-        sendButton.setVisibility(View.GONE);
         Intent intent = getIntent();
-        Gson gson = new Gson();
-        String items = intent.getStringExtra(InvoiceDetailsActivity.INVOICE_DETAILS);
-        if (items != null) {
-            Type type = new TypeToken<List<InvoiceDetails>>() {
-            }.getType();
-            remainItemList = gson.fromJson(items, type);
-            Log.d(TAG, String.valueOf(remainItemList));
-        } else {
-            Log.d(TAG, "Items transition failed");
-        }
+        startType = intent.getIntExtra(START_TYPE, -1);
         userCookie = intent.getStringExtra(LoginActivity.USER_COOKIE);
-        invoiceId = intent.getStringExtra(InvoiceDetailsActivity.INVOICE_ID);
         mAPIService = APIUtils.getApiService();
-        doneItemList = new ArrayList<>();
-        ListView remainListView = (ListView) findViewById(R.id.scanToDo);
-        adapterRemain = new InvoiceDetailsAdapter(this, remainItemList);
-        remainListView.setAdapter(adapterRemain);
-        ListView doneListView = (ListView) findViewById(R.id.scanDone);
-        adapterDone = new InvoiceDetailsAdapter(this, doneItemList);
-        doneListView.setAdapter(adapterDone);
-
-        barcodeScannerView = (DecoratedBarcodeView) findViewById(R.id.scanWindow);
-
+        barcodeScannerView = (DecoratedBarcodeView)findViewById(R.id.scanWindow);
         barcodeScannerView.setTorchListener(this);
         barcodeScannerView.decodeContinuous(callback);
-
-        switchFlashlightButton = (Button) findViewById(R.id.flashlight);
-
+        switchFlashlightButton = (Button)findViewById(R.id.flashlight);
         if (!hasFlash()) {
             switchFlashlightButton.setVisibility(View.GONE);
         } else {
@@ -128,45 +95,9 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
         }
     }
 
-    private InvoiceDetails getItemFromList(int id, List<InvoiceDetails> list) {
-        for (InvoiceDetails item : list) {
-            if (item.getId() == id) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    private void pushItemToDone(InvoiceDetails item) {
-        if (item.getAmount() < 2) {
-            remainItemList.remove(item);
-        } else {
-            item.decreaseAmount();
-        }
-
-        InvoiceDetails doneItem = getItemFromList(item.getId(), doneItemList);
-        if (doneItem != null) {
-            doneItem.increaseAmount();
-        } else {
-            doneItem = new InvoiceDetails();
-            doneItem.setCost(item.getCost());
-            doneItem.setId(item.getId());
-            doneItem.setName(item.getName());
-            doneItem.setAmount(1);
-            doneItemList.add(doneItem);
-        }
-        Button sendButton = (Button) findViewById(R.id.sendButton);
-        if (remainItemList.size() == 0) {
-            sendButton.setVisibility(View.VISIBLE);
-        }
-
-        adapterDone.notifyDataSetChanged();
-        adapterRemain.notifyDataSetChanged();
-    }
-
     private boolean hasFlash() {
         return getApplicationContext().getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+            .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 
     public void switchFlashlight() {
@@ -216,36 +147,56 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
         super.onBackPressed();
     }
 
-    private void sendToServer() {
-        mAPIService.sendInvoiceComplected(userCookie, Integer.parseInt(invoiceId)).enqueue(new Callback<String>() {
+    private void addItem(String itemId) {
+        mAPIService.getItemRequest(userCookie, itemId).enqueue(new Callback<Item>() {
+            @Override
+            public void onResponse(Call<Item> call, Response<Item> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Item completion sent.");
+                    showToastWithText("Complete!");
+                    setResult(1);
+                    finish();
+                } else {
+                    Log.i(TAG, "Something goes wrong:" + response.message());
+                    showToastWithText("Not found!");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Item> call, Throwable t) {
+                Log.e(TAG, "Unable to complete Item:" + t.getMessage());
+                showToastWithText("No connection!");
+            }
+        });
+    }
+
+    private void deleteItem(String itemId) {
+        mAPIService.deleteItemRequest(userCookie, itemId).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    Log.i(TAG, "Invoice completion sent.");
+                    Log.i(TAG, "Item completion sent.");
+                    showToastWithText("Complete!");
+                    setResult(1);
+                    finish();
                 } else {
                     Log.i(TAG, "Something goes wrong:" + response.message());
+                    showToastWithText("Not found!");
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.e(TAG, "Unable to complete invoice:" + t.getMessage());
+                Log.e(TAG, "Unable to complete Item:" + t.getMessage());
+                showToastWithText("No connection!");
             }
         });
     }
 
-    private void showSuccessToast() {
-        String message = "Order completed!";
+    private void showToastWithText(String message) {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, message, duration);
         toast.show();
-    }
-
-    public void send(View view) {
-        sendToServer();
-        showSuccessToast();
-        setResult(1);
-        finish();
     }
 }

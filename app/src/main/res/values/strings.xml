@@ -1,23 +1,23 @@
 <resources>
-    <string name="app_name">AuthApp</string>
+    <string name="app_name">WarehouseApp</string>
     <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="auth">Authorization</string>
-    <string name="title">Authorization App</string>
+    <string name="title">Warehouse App</string>
     <string name="loginButton">Login</string>
     <string name="logoutButton">Logout</string>
     <string name="refreshButton">Refresh</string>
-    <string name="sNumber">Number</string>
-    <string name="sCustomer">Customer</string>
-    <string name="sPositions">Amount</string>
-    <string name="sMoney">Sum</string>
-    <string name="invoiceListName">Invoices</string>
+    <string name="addButton">Add</string>
+    <string name="deleteButton">Delete</string>
+    <string name="sId">ID</string>
+    <string name="sName">Name</string>
+    <string name="itemListName">Items</string>
     <string name="itemName">Name</string>
     <string name="itemAmount">Amount</string>
     <string name="itemCost">Cost</string>
     <string name="backButton">Back</string>
     <string name="scanButton">Scan</string>
     <string name="sendButton">Send</string>
-    <string name="flashlight_ON">ON</string>
-    <string name="flashlight_OFF">OFF</string>
+    <string name="flashlight_ON">Flash ON</string>
+    <string name="flashlight_OFF">Flash OFF</string>
 </resources>

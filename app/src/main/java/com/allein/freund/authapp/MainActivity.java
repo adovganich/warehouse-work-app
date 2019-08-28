@@ -8,14 +8,19 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.allein.freund.authapp.remote.APIService;
 import com.allein.freund.authapp.remote.APIUtils;
 import com.allein.freund.authapp.remote.AuthService;
-import com.allein.freund.authapp.remote.Invoice;
+import com.allein.freund.authapp.remote.Item;
+import com.allein.freund.authapp.remote.ItemDetails;
 import com.allein.freund.authapp.remote.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,16 +29,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity {
-    public static final String INVOICE_ID = "com.allein.freund.authapp.INVOICE_ID";
-    public static final String INVOICE_CUSTOMER = "com.allein.freund.authapp.INVOICE_CUSTOMER";
-    public static final String INVOICE_SIZE = "com.allein.freund.authapp.INVOICE_SIZE";
-    public static final String INVOICE_MONEY = "com.allein.freund.authapp.INVOICE_MONEY";
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String ITEM_ID = "com.allein.freund.authapp.ITEM_ID";
+    public static final String ITEM_NAME = "com.allein.freund.authapp.ITEM_NAME";
     private String TAG = "MAIN";
     private APIService mAPIService;
     private String userCookie;
-    private List<Invoice> invoiceList;
+    private List<Item> ItemList;
     private ListViewAdapter adapter;
+    private Button logoutButton;
+    private Button refreshButton;
+    private Button addButton;
+    private Button deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,57 +51,83 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userCookie = intent.getStringExtra(LoginActivity.USER_COOKIE);
         mAPIService = APIUtils.getApiService();
-        invoiceList = new ArrayList<>();
-        ListView invoiceListView = (ListView) findViewById(R.id.listview);
-        adapter = new ListViewAdapter(this, invoiceList);
-        invoiceListView.setAdapter(adapter);
-        invoiceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Invoice invoice = getInvoice(position);
-                Log.d(TAG, "itemSelect: position = " + position + ", id = " + invoice.getNumber());
-                passToInvoiceDetailsActivity(invoice);
-            }
-        });
+        ItemList = new ArrayList<>();
+        ListView ItemListView = (ListView) findViewById(R.id.listview);
+        adapter = new ListViewAdapter(this, ItemList);
+        ItemListView.setAdapter(adapter);
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(this);
+        refreshButton = (Button) findViewById(R.id.refreshButton);
+        refreshButton.setOnClickListener(this);
+        addButton = (Button) findViewById(R.id.addButton);
+        addButton.setOnClickListener(this);
+        deleteButton = (Button) findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(this);
 
-        getInvoices();
+        getItems();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getInvoices();
+        getItems();
     }
 
-    private Invoice getInvoice(int position) {
-        return invoiceList.get(position);
+    private Item getItem(int position) {
+        return ItemList.get(position);
     }
 
-    private void getInvoices() {
-        mAPIService.getInvoices(userCookie).enqueue(new Callback<List<Invoice>>() {
+    private void getItems() {
+        mAPIService.getItems(userCookie).enqueue(new Callback<List<Item>>() {
             @Override
-            public void onResponse(Call<List<Invoice>> call, Response<List<Invoice>> response) {
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.isSuccessful()) {
-                    List<Invoice> invoices = response.body();
-                    populateList(invoices);
+                    List<Item> Items = response.body();
+                    populateList(Items);
                 } else {
                     Log.i(TAG, "Something goes wrong:" + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Invoice>> call, Throwable t) {
-                Log.e(TAG, "Unable to fetch invoices.");
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.e(TAG, "Unable to fetch Items.");
             }
         });
     }
 
-    public void refreshInvoices(View view) {
-        getInvoices();
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        switch (i) {
+            case R.id.logoutButton:
+                logout();
+                break;
+            case R.id.refreshButton:
+                getItems();
+                break;
+            case R.id.addButton:
+                scanToAddNew();
+                break;
+            case R.id.deleteButton:
+                scanToDelete();
+                break;
+        }
     }
 
-    public void logout(View view) {
-        logout();
+    private void scanToAddNew() {
+        Intent intent = new Intent(this, ScanActivity.class);
+        intent.putExtra(ScanActivity.START_TYPE, 0);
+        intent.putExtra(LoginActivity.USER_COOKIE, userCookie);
+        startActivityForResult(intent, 1);
+        getItems();
+    }
+
+    private void scanToDelete() {
+        Intent intent = new Intent(this, ScanActivity.class);
+        intent.putExtra(ScanActivity.START_TYPE, 1);
+        intent.putExtra(LoginActivity.USER_COOKIE, userCookie);
+        startActivityForResult(intent, 1);
     }
 
     private void logout() {
@@ -113,9 +146,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void populateList(List<Invoice> invoices) {
-        invoiceList.clear();
-        invoiceList.addAll(invoices);
+    private void populateList(List<Item> Items) {
+        ItemList.clear();
+        ItemList.addAll(Items);
         adapter.notifyDataSetChanged();
     }
 
@@ -124,14 +157,12 @@ public class MainActivity extends AppCompatActivity {
         logout();
     }
 
-    private void passToInvoiceDetailsActivity(Invoice invoice) {
-        Intent intent = new Intent(this, InvoiceDetailsActivity.class);
+    private void passToItemDetailsActivity(Item Item) {
+        Intent intent = new Intent(this, ItemDetailsActivity.class);
         intent.putExtra(LoginActivity.USER_COOKIE, userCookie);
-        intent.putExtra(INVOICE_ID, String.valueOf(invoice.getNumber()));
-        intent.putExtra(INVOICE_CUSTOMER, invoice.getCustomer());
-        intent.putExtra(INVOICE_SIZE, String.valueOf(invoice.getPositions()));
-        intent.putExtra(INVOICE_MONEY, String.valueOf(invoice.getMoney()));
-//        intent.putExtra("ExtraObj", invoice);
+        intent.putExtra(ITEM_ID, String.valueOf(Item.getId()));
+        intent.putExtra(ITEM_NAME, Item.getName());
+//        intent.putExtra("ExtraObj", Item);
         startActivity(intent);
     }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.allein.freund.authapp.remote.Invoice;
+import com.allein.freund.authapp.remote.Item;
 
 import java.util.List;
 
@@ -17,23 +17,23 @@ import java.util.List;
  */
 public class ListViewAdapter extends BaseAdapter {
 
-    public List<Invoice> invoiceList;
+    public List<Item> ItemList;
     Activity activity;
 
-    public ListViewAdapter(Activity activity, List<Invoice> invoiceList) {
+    public ListViewAdapter(Activity activity, List<Item> ItemList) {
         super();
         this.activity = activity;
-        this.invoiceList = invoiceList;
+        this.ItemList = ItemList;
     }
 
     @Override
     public int getCount() {
-        return invoiceList.size();
+        return ItemList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return invoiceList.get(position);
+        return ItemList.get(position);
     }
 
     @Override
@@ -42,10 +42,8 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
-        TextView sNumber;
-        TextView sCustomer;
-        TextView sPositions;
-        TextView sMoney;
+        TextView sId;
+        TextView sName;
     }
 
     @Override
@@ -56,20 +54,16 @@ public class ListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listview_row, null);
             holder = new ViewHolder();
-            holder.sNumber = (TextView) convertView.findViewById(R.id.sNumber);
-            holder.sCustomer = (TextView) convertView.findViewById(R.id.sCustomer);
-            holder.sPositions = (TextView) convertView.findViewById(R.id.sPositions);
-            holder.sMoney = (TextView) convertView.findViewById(R.id.sMoney);
+            holder.sId = (TextView) convertView.findViewById(R.id.sId);
+            holder.sName = (TextView) convertView.findViewById(R.id.sName);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Invoice item = invoiceList.get(position);
-        holder.sNumber.setText(String.valueOf(item.getNumber()));
-        holder.sCustomer.setText(String.valueOf(item.getCustomer()));
-        holder.sPositions.setText(String.valueOf(item.getPositions()));
-        holder.sMoney.setText(String.valueOf(item.getMoney()));
+        Item item = ItemList.get(position);
+        holder.sId.setText(String.valueOf(item.getId()));
+        holder.sName.setText(String.valueOf(item.getName()));
 
         return convertView;
     }

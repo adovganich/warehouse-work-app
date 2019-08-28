@@ -18,33 +18,8 @@
             android:ellipsize="end"
             android:padding="5dp"
             android:singleLine="true"
-            android:text="@string/sNumber"
+            android:text="@string/sName"
             android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/dAmount"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/cell_shape"
-            android:ellipsize="end"
-            android:padding="5dp"
-            android:singleLine="true"
-            android:text="@string/sCustomer"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/dCost"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/cell_shape"
-            android:ellipsize="end"
-            android:padding="5dp"
-            android:singleLine="true"
-            android:text="@string/sPositions"
-            android:textAlignment="center" />
-
 
     </LinearLayout>
 </RelativeLayout>

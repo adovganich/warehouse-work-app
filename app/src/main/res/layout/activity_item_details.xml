@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/invoiceDetailsTitle"
+            android:id="@+id/itemDetailsTitle"
             android:layout_width="203dp"
             android:layout_height="46dp"
             android:layout_alignParentLeft="true"
@@ -27,26 +27,10 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/detailsCustomer"
+            android:id="@+id/detailsName"
             android:layout_width="177dp"
             android:layout_height="33dp"
-            android:layout_below="@+id/invoiceDetailsTitle"
-            android:text=""
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/detailsSize"
-            android:layout_width="177dp"
-            android:layout_height="33dp"
-            android:layout_below="@+id/detailsCustomer"
-            android:text=""
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/detailsMoney"
-            android:layout_width="177dp"
-            android:layout_height="33dp"
-            android:layout_below="@+id/detailsSize"
+            android:layout_below="@+id/itemDetailsTitle"
             android:text=""
             android:textAlignment="center" />
 
@@ -57,16 +41,16 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="28dp"
             android:layout_marginStart="28dp"
-            android:layout_toEndOf="@+id/invoiceDetailsTitle"
-            android:layout_toRightOf="@+id/invoiceDetailsTitle"
-            android:onClick="refreshInvoice"
+            android:layout_toEndOf="@id/itemDetailsTitle"
+            android:layout_toRightOf="@id/itemDetailsTitle"
+            android:onClick="refreshItem"
             android:text="@string/refreshButton" />
 
         <LinearLayout
             android:id="@+id/relativeLayoutDetails"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/detailsMoney"
+            android:layout_below="@id/detailsName"
             android:background="@color/colorCell">
 
             <TextView
@@ -79,25 +63,6 @@
                 android:textAlignment="center"
                 android:textColor="#000000" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/itemAmount"
-                android:textAlignment="center"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/itemCost"
-                android:textAlignment="center"
-                android:textColor="#000000" />
         </LinearLayout>
 
         <ListView

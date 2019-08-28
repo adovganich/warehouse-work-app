@@ -9,7 +9,7 @@ public class APIUtils {
     private APIUtils() {
     }
 
-    public static final String BASE_URL = "http://192.168.20.156:8888/";
+    public static final String BASE_URL = "https://warehouseserver20190809081742.azurewebsites.net/";
 
     public static AuthService getAuthService() {
         return RetrofitClient.getClient(BASE_URL).create(AuthService.class);

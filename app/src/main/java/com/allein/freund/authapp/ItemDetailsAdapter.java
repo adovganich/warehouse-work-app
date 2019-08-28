@@ -7,19 +7,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.allein.freund.authapp.remote.InvoiceDetails;
+import com.allein.freund.authapp.remote.ItemDetails;
 
 import java.util.List;
 
 /**
  * Created by freund on 1/10/18.
  */
-public class InvoiceDetailsAdapter extends BaseAdapter {
+public class ItemDetailsAdapter extends BaseAdapter {
 
-    public List<InvoiceDetails> itemsList;
+    public List<ItemDetails> itemsList;
     Activity activity;
 
-    public InvoiceDetailsAdapter(Activity activity, List<InvoiceDetails> detailsList) {
+    public ItemDetailsAdapter(Activity activity, List<ItemDetails> detailsList) {
         super();
         this.activity = activity;
         this.itemsList = detailsList;
@@ -42,8 +42,6 @@ public class InvoiceDetailsAdapter extends BaseAdapter {
 
     private class ViewHolder {
         TextView dName;
-        TextView dAmount;
-        TextView dCost;
     }
 
     @Override
@@ -55,17 +53,13 @@ public class InvoiceDetailsAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.details_row, null);
             holder = new ViewHolder();
             holder.dName = (TextView) convertView.findViewById(R.id.dName);
-            holder.dAmount = (TextView) convertView.findViewById(R.id.dAmount);
-            holder.dCost = (TextView) convertView.findViewById(R.id.dCost);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        InvoiceDetails item = itemsList.get(position);
+        ItemDetails item = itemsList.get(position);
         holder.dName.setText(String.valueOf(item.getName()));
-        holder.dAmount.setText(String.valueOf(item.getAmount()));
-        holder.dCost.setText(String.valueOf(item.getCost()));
 
         return convertView;
     }

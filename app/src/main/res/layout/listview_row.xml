@@ -10,7 +10,7 @@
         android:background="@color/colorCell">
 
         <TextView
-            android:id="@+id/sNumber"
+            android:id="@+id/sId"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -18,11 +18,11 @@
             android:ellipsize="end"
             android:padding="5dp"
             android:singleLine="true"
-            android:text="@string/sNumber"
+            android:text="@string/sId"
             android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/sCustomer"
+            android:id="@+id/sName"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -30,31 +30,8 @@
             android:ellipsize="end"
             android:padding="5dp"
             android:singleLine="true"
-            android:text="@string/sCustomer"
+            android:text="@string/sName"
             android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/sPositions"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/cell_shape"
-            android:ellipsize="end"
-            android:padding="5dp"
-            android:singleLine="true"
-            android:text="@string/sPositions"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/sMoney"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="@drawable/cell_shape"
-            android:ellipsize="end"
-            android:padding="5dp"
-            android:singleLine="true"
-            android:text="@string/sMoney"
-            android:textAlignment="center" />
     </LinearLayout>
 </RelativeLayout>
