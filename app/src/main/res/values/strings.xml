@@ -20,4 +20,13 @@
     <string name="sendButton">Send</string>
     <string name="flashlight_ON">Flash ON</string>
     <string name="flashlight_OFF">Flash OFF</string>
+
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+
+    <string name="no_permissions">Not enough permissions! The application can work
+        incorrectly!</string>
+    <string name="server_url_changed">Server url changed!</string>
+    <string name="server_bad_url">Incorrect url!</string>
+
 </resources>

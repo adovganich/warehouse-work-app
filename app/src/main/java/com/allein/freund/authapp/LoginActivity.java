@@ -1,5 +1,6 @@
 package com.allein.freund.authapp;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.allein.freund.authapp.fragments.ChangeServerUrlDialogFragment;
 import com.allein.freund.authapp.remote.APIUtils;
 import com.allein.freund.authapp.remote.AuthService;
 import com.allein.freund.authapp.remote.User;
@@ -24,11 +26,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements ChangeServerUrlDialogFragment.ChangeServerUrlDialogListener {
     public static final String USER_COOKIE = "com.allein.freund.authapp.USER_COOKIE";
     private AuthService mAuthService;
     private String TAG = "LOGIN";
     private Button loginBtn;
+    private Button settingsBtn;
     private ProgressBar progressBar;
 
     @Override
@@ -38,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mAuthService = APIUtils.getAuthService();
         loginBtn = (Button) findViewById(R.id.btn_submit);
+        settingsBtn = (Button) findViewById(R.id.setting_button);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                     sendCredentials(email, password);
                     showLoginButton(false);
                 }
+            }
+        });
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showChangeServerUrlDialog();
             }
         });
     }
@@ -115,6 +125,11 @@ public class LoginActivity extends AppCompatActivity {
         toast.show();
     }
 
+    private void showChangeServerUrlDialog() {
+        DialogFragment dialog = new ChangeServerUrlDialogFragment();
+        dialog.show(getFragmentManager(), "ChangeServerUrlDialogFragment");
+    }
+
     private Boolean credentialsAreValid(EditText emailInput, EditText passwordInput) {
         Boolean flag = true;
         String email = emailInput.getText().toString().trim();
@@ -134,5 +149,17 @@ public class LoginActivity extends AppCompatActivity {
         return flag;
     }
 
+    @Override
+    public void onUrlChange(DialogFragment dialog) {
+        mAuthService = APIUtils.getAuthService();
+        Toast.makeText(this, R.string.server_url_changed, Toast.LENGTH_SHORT)
+            .show();
+    }
+
+    @Override
+    public void onBadUrl(DialogFragment dialog) {
+        Toast.makeText(this, R.string.server_bad_url, Toast.LENGTH_SHORT)
+            .show();
+    }
 }
 

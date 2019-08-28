@@ -9,13 +9,32 @@ public class APIUtils {
     private APIUtils() {
     }
 
-    public static final String BASE_URL = "https://warehouseserver20190809081742.azurewebsites.net/";
+    private static final String BASE_URL = "https://warehouseserver20190809081742.azurewebsites.net/";
+    private static String customBaseUrl = null;
 
     public static AuthService getAuthService() {
-        return RetrofitClient.getClient(BASE_URL).create(AuthService.class);
+        if(customBaseUrl == null)
+            return RetrofitClient.getClient(BASE_URL).create(AuthService.class);
+        else
+            return RetrofitClient.getClient(customBaseUrl).create(AuthService.class);
     }
 
     public static APIService getApiService() {
-        return RetrofitClient.getClient(BASE_URL).create(APIService.class);
+        if(customBaseUrl == null)
+            return RetrofitClient.getClient(BASE_URL).create(APIService.class);
+        else
+            return RetrofitClient.getClient(customBaseUrl).create(APIService.class);
     }
+
+    public static void setCustomBaseUrl(String baseUrl) {
+        customBaseUrl = baseUrl;
+    }
+
+    public static String getBaseUrl() {
+        if(customBaseUrl == null)
+            return BASE_URL;
+        else
+            return customBaseUrl;
+    }
+
 }

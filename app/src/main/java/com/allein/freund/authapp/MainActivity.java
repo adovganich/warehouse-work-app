@@ -1,7 +1,12 @@
 package com.allein.freund.authapp;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +15,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.allein.freund.authapp.remote.APIService;
 import com.allein.freund.authapp.remote.APIUtils;
@@ -30,6 +36,8 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final int PERMISSIONS_REQUEST_CAMERA_AND_INTERNET = 0;
+
     public static final String ITEM_ID = "com.allein.freund.authapp.ITEM_ID";
     public static final String ITEM_NAME = "com.allein.freund.authapp.ITEM_NAME";
     private String TAG = "MAIN";
@@ -65,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         deleteButton.setOnClickListener(this);
 
         getItems();
+
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            checkPermissions();
     }
 
     @Override
@@ -164,5 +175,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra(ITEM_NAME, Item.getName());
 //        intent.putExtra("ExtraObj", Item);
         startActivity(intent);
+    }
+
+    private void checkPermissions() {
+        if ((ContextCompat.checkSelfPermission(this,
+            Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) ||
+            (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED)) {
+
+            ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA, Manifest.permission.INTERNET},
+                PERMISSIONS_REQUEST_CAMERA_AND_INTERNET);
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_CAMERA_AND_INTERNET: {
+                if(grantResults.length > 0) {
+                    for(int gr : grantResults)
+                    {
+                        if(gr != PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(this, R.string.no_permissions, Toast.LENGTH_SHORT)
+                                .show();
+                            return;
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(this, R.string.no_permissions, Toast.LENGTH_SHORT)
+                        .show();
+                }
+                return;
+            }
+        }
     }
 }
