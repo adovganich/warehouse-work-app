@@ -22,7 +22,7 @@ public interface APIService {
                                            @Path("id") int itemId);
 
     @PUT("/api/items/{id}")
-    Call<Item> getItemRequest(@Header("Cookie") String userCookie,
+    Call<String> getItemRequest(@Header("Cookie") String userCookie,
                                 @Path("id") String itemId);
 
     @DELETE("/api/items/{id}")

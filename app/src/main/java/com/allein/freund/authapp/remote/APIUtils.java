@@ -9,7 +9,8 @@ public class APIUtils {
     private APIUtils() {
     }
 
-    private static final String BASE_URL = "https://warehouseserver20190809081742.azurewebsites.net/";
+    //private static final String BASE_URL = "https://warehouseserver20190809081742.azurewebsites.net/";
+    private static final String BASE_URL = "http://52.209.116.253/";
     private static String customBaseUrl = null;
 
     public static AuthService getAuthService() {

@@ -8,7 +8,7 @@
     <string name="logoutButton">Logout</string>
     <string name="refreshButton">Refresh</string>
     <string name="addButton">Add</string>
-    <string name="deleteButton">Delete</string>
+    <string name="deleteButton">Return</string>
     <string name="sId">ID</string>
     <string name="sName">Name</string>
     <string name="itemListName">Items</string>

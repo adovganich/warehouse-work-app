@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.allein.freund.authapp.remote.APIService;
 import com.allein.freund.authapp.remote.APIUtils;
-import com.allein.freund.authapp.remote.Item;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
@@ -148,9 +147,9 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
     }
 
     private void addItem(String itemId) {
-        mAPIService.getItemRequest(userCookie, itemId).enqueue(new Callback<Item>() {
+        mAPIService.getItemRequest(userCookie, itemId).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Item> call, Response<Item> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Item completion sent.");
                     showToastWithText("Complete!");
@@ -163,7 +162,7 @@ public class ScanActivity extends AppCompatActivity implements DecoratedBarcodeV
             }
 
             @Override
-            public void onFailure(Call<Item> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.e(TAG, "Unable to complete Item:" + t.getMessage());
                 showToastWithText("No connection!");
             }
